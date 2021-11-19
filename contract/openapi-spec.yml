@@ -1,0 +1,82 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Room Occupancy Manager
+paths:
+  /occupancy/predict-allocation:
+    post:
+      summary: Predicts allocation for supplied rooms
+      description: Room occupancy optimization endpoint which allows customers to calculate how much can they earn from their offered rooms.
+      tags:
+        - Occupancy
+      requestBody:
+        description: Request containing number of available rooms
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OccupancyPredictAllocation'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OccupancyAllocateResponse"
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    OccupancyPredictAllocation:
+      type: object
+      required:
+        - availableRooms
+      properties:
+        availableRooms:
+          $ref: "#/components/schemas/AvailableRooms"
+    AvailableRooms:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          roomType:
+            $ref: "#/components/schemas/RoomType"
+          numberOfAvailableRooms:
+            type: integer
+      example:
+        PREMIUM: 2
+        ECONOMY: 3
+    RoomType:
+      type: string
+      enum:
+        - PREMIUM
+        - ECONOMY
+    OccupancyAllocateResponse:
+      type: object
+      required:
+        - totalRevenue
+        - usedRoomTypes
+      properties:
+        totalRevenue:
+          type: number
+          format: double
+        usedRoomTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsedRoom'
+    UsedRoom:
+      type: object
+      required:
+        - type
+        - count
+        - revenue
+      properties:
+        type:
+          $ref: "#/components/schemas/RoomType"
+        count:
+          type: integer
+        revenue:
+          type: number
+          format: double

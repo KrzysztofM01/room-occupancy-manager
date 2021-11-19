@@ -2,5 +2,4 @@ priority:
   strategy:
     type: HIGHEST_BIDDER_WITH_THRESHOLDS
     thresholds:
-      PREMIUM: 200
-      ECONOMY: 20
+      PREMIUM: 100

@@ -1,4 +1,4 @@
-package com.sanesoft.roomoccupancymanager.integration.util
+package com.sanesoft.roomoccupancymanager.util
 
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
@@ -11,10 +11,6 @@ trait RestClientSupport {
         RestAssured.given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-    }
-
-    ValidatableResponse expectPost(String endpointPath, RequestSpecification request = emptyRequest()) {
-        request.post(endpointPath).then()
     }
 
     ValidatableResponse expectPost(String endpointPath, String body) {

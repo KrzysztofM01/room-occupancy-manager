@@ -1,4 +1,4 @@
-package com.sanesoft.roomoccupancymanager.exception;
+package com.sanesoft.roomoccupancymanager.controller.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
