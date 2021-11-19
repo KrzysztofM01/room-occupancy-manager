@@ -1,9 +1,12 @@
 package com.sanesoft.roomoccupancymanager.unit.service.validator
 
-import com.sanesoft.roomoccupancymanager.exception.InvalidRequestException
-import com.sanesoft.roomoccupancymanager.model.request.OccupancyAllocateDto
-import com.sanesoft.roomoccupancymanager.service.validator.DataValidator
+import com.sanesoft.roomoccupancymanager.controller.exception.InvalidRequestException
+import com.sanesoft.roomoccupancymanager.model.request.OccupancyPredictAllocationDto
+import com.sanesoft.roomoccupancymanager.service.occupancy.validator.DataValidator
 import spock.lang.Specification
+
+import static com.sanesoft.roomoccupancymanager.model.request.RoomTypeDto.ECONOMY
+import static com.sanesoft.roomoccupancymanager.model.request.RoomTypeDto.PREMIUM
 
 class DataValidatorSpec extends Specification {
 
@@ -11,7 +14,7 @@ class DataValidatorSpec extends Specification {
 
     def "valid data should not throw any exception"() {
         when:
-        dataValidator.validate(new OccupancyAllocateDto(1, 1))
+        dataValidator.validate(new OccupancyPredictAllocationDto([(PREMIUM): 1, (ECONOMY): 1]))
 
         then:
         noExceptionThrown()
@@ -27,9 +30,9 @@ class DataValidatorSpec extends Specification {
 
         where:
         data || expectedMsg
-        new OccupancyAllocateDto(null, 1) || "No premium rooms count was provided."
-        new OccupancyAllocateDto(1, null) || "No economy rooms count was provided."
-        new OccupancyAllocateDto(-1, 0) || "Count of rooms cannot be negative."
-        new OccupancyAllocateDto(0, -1) || "Count of rooms cannot be negative."
+        new OccupancyPredictAllocationDto([(PREMIUM): null, (ECONOMY): 1]) || "Invalid PREMIUM rooms count was provided."
+        new OccupancyPredictAllocationDto([(PREMIUM): 1, (ECONOMY): null]) || "Invalid ECONOMY rooms count was provided."
+        new OccupancyPredictAllocationDto([(PREMIUM): -1, (ECONOMY): 1])   || "Invalid PREMIUM rooms count was provided."
+        new OccupancyPredictAllocationDto([(PREMIUM): 1, (ECONOMY): -1])   || "Invalid ECONOMY rooms count was provided."
     }
 }

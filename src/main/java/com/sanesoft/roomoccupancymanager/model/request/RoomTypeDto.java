@@ -1,4 +1,4 @@
-package com.sanesoft.roomoccupancymanager.model.response;
+package com.sanesoft.roomoccupancymanager.model.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
